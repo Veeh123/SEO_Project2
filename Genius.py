@@ -3,6 +3,8 @@ import json
 import sqlalchemy as db
 import pandas as pd
 
+
+
 def Genius():
 #cont = True
 	while True:	
@@ -40,3 +42,4 @@ def Genius():
 			print('Thank you for using our genius API <_>!!')
 			break
 Genius()
+

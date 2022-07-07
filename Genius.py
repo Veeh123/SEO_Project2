@@ -1,5 +1,8 @@
 import requests
 import json
+import sqlalchemy as db
+import pandas as pd
+
 def function1(x):
 	return x * 0
 
@@ -20,7 +23,17 @@ headers = {
 response = requests.request("GET", url, headers=headers, params=querystring)
 
 data = json.loads(response.text)['response']['hits']
+name = []
+song_title = []
 for item in data:
         # Print the artist and title of each result
-    print(item['result']['primary_artist']['name']
-              + ': ' + item['result']['title'])
+#    print(item['result']['primary_artist']['name']
+#              + ': ' + item['result']['title'])
+	name.append(item['result']['primary_artist']['name'])
+	song_title.append(item['result']['title'])
+
+genius_info = pd.DataFrame(song_title)
+engine = db.create_engine('sqlite:///artist_hits.db')
+genius_info.to_sql('artist_songs', con=engine, if_exists='replace', index=False)
+query_result = engine.execute("SELECT * FROM artist_songs;").fetchall()
+print(pd.DataFrame(query_result))

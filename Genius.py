@@ -1,5 +1,8 @@
 import requests
 import json
+import sqalchemy as db
+import pandas as pd
+
 def function1(x):
 	return x * 0
 
@@ -24,3 +27,9 @@ for item in data:
         # Print the artist and title of each result
     print(item['result']['primary_artist']['name']
               + ': ' + item['result']['title'])
+
+genius_info = pd.DataFrame(data)
+engine = db.create_engine('sqlite:///artist_hits.db')
+genius_info.to_sql('user_artists, con=engine, if_exists='replace', index=False)
+query_result = engine.execute("SELECT * FROM user_artists;").fetchall()
+print(pd.DataFrame(query_result))

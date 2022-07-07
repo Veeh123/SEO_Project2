@@ -32,7 +32,8 @@ for item in data:
 	name.append(item['result']['primary_artist']['name'])
 	song_title.append(item['result']['title'])
 
-genius_info = pd.DataFrame(song_title)
+derived_data = {'name': name, 'Song Title': song_title}
+genius_info = pd.DataFrame.from_dict(derived_data)
 engine = db.create_engine('sqlite:///artist_hits.db')
 genius_info.to_sql('artist_songs', con=engine, if_exists='replace', index=False)
 query_result = engine.execute("SELECT * FROM artist_songs;").fetchall()
